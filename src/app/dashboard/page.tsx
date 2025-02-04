@@ -66,7 +66,7 @@ export default function DashboardPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-8">Relatórios Salvos</h1>
+      <h1 className="text-3xl font-bold text-center mb-8">Relatórios salvos</h1>
       {reports.length === 0 ? (
         <div className="flex justify-center items-center h-64">
           <p className="text-xl text-gray-600">Nenhum relatório encontrado.</p>

@@ -159,12 +159,12 @@ export default function EditorPage() {
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="w-full max-w-4xl bg-white p-6 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold mb-6 text-center">
-          Criar Novo Relatório
+          Criar novo relatório
         </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Título */}
           <div>
-            <label className="block font-bold mb-1">Título do Relatório</label>
+            <label className="block font-bold mb-1">Título</label>
             <Input
               type="text"
               name="title"
