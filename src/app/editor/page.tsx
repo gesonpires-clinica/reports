@@ -229,8 +229,18 @@ export default function EditorPage() {
                   <option value="Fundamental">Infantil I</option>
                   <option value="Médio">Infantil II</option>
                   <option value="Superior">Infantil III</option>
-                  <option value="Superior">Fundamental I</option>
-                  <option value="Superior">Fundamental II</option>
+                  <option value="Superior">1º EF</option>
+                  <option value="Superior">2º EF</option>
+                  <option value="Superior">3º EF</option>
+                  <option value="Superior">4º EF</option>
+                  <option value="Superior">5º EF</option>
+                  <option value="Superior">6º EF</option>
+                  <option value="Superior">7º EF</option>
+                  <option value="Superior">8º EF</option>
+                  <option value="Superior">9º EF</option>
+                  <option value="Superior">1º EM</option>
+                  <option value="Superior">2º EM</option>
+                  <option value="Superior">3º EM</option>
                 </select>
               </div>
               <div>
