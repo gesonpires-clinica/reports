@@ -8,7 +8,7 @@ export default function Sidebar() {
       <ul className="space-y-2">
         <li>
           <Link href="/dashboard" className="block p-2 hover:bg-gray-300 rounded">
-            Dashboard
+            Painel
           </Link>
         </li>
         <li>

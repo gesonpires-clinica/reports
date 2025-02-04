@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <header className="bg-blue-600 text-white p-4 flex items-center justify-between">
       <div className="text-xl font-bold">
-        <Link href="/">Minha Aplicação</Link>
+        <Link href="/">GeraRAN</Link>
       </div>
       <nav className="space-x-4">
         <Link href="/">Home</Link>
