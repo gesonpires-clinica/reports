@@ -271,24 +271,24 @@ export default function EditorPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium">Pai:</label>
+                <label className="block text-sm font-medium">Pai/responsável:</label>
                 <Input
                   type="text"
                   name="identificacao.pai"
                   value={form.identificacao.pai}
                   onChange={handleNestedChange}
-                  placeholder="Nome do Pai/responsável"
+                  placeholder="Nome do pai/responsável"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium">Mãe:</label>
+                <label className="block text-sm font-medium">Mãe/responsável:</label>
                 <Input
                   type="text"
                   name="identificacao.mae"
                   value={form.identificacao.mae}
                   onChange={handleNestedChange}
-                  placeholder="Nome da Mãe/responsável"
+                  placeholder="Nome da mãe/responsável"
                   required
                 />
               </div>
