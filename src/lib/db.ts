@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb:////127.0.0.1:27017/relatorios";
+const MONGO_URI =
+  process.env.MONGO_URI ||
+  "mongodb+srv://clinicaneuromarianebach:dBDxjqM9livM3eBG@clinica-mari.zwkes.mongodb.net/clinica-mari?retryWrites=true&w=majority&appName=clinica-mari";
 
 // Função para conectar ao MongoDB
 export const connectDB = async () => {
