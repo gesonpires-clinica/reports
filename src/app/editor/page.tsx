@@ -266,8 +266,8 @@ export default function EditorPage() {
                   required
                 >
                   <option value="">Selecione</option>
-                  <option value="Destro">Destro</option>
-                  <option value="Ambidestro">Ambidestro</option>
+                  <option value="Destro">Destra</option>
+                  <option value="Ambidestro">Ambidestra</option>
                 </select>
               </div>
               <div>
@@ -277,7 +277,7 @@ export default function EditorPage() {
                   name="identificacao.pai"
                   value={form.identificacao.pai}
                   onChange={handleNestedChange}
-                  placeholder="Nome do Pai"
+                  placeholder="Nome do Pai/responsável"
                   required
                 />
               </div>
@@ -288,7 +288,7 @@ export default function EditorPage() {
                   name="identificacao.mae"
                   value={form.identificacao.mae}
                   onChange={handleNestedChange}
-                  placeholder="Nome da Mãe"
+                  placeholder="Nome da Mãe/responsável"
                   required
                 />
               </div>
