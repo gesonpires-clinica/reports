@@ -8,8 +8,7 @@ import { logoBase64 } from "@/assets/logo"; // ajuste o caminho conforme sua est
 // Configura as fontes virtuais
 pdfMake.vfs = pdfFonts.vfs;
 
-// Define um tipo auxiliar para a largura das colunas
-type ColumnWidth = number | string;
+// Define um tipo auxiliar para a largura das coluna
 
 export type Report = {
   _id: string;
@@ -52,7 +51,7 @@ export const generateEvaluationPDF = async (report: Report): Promise<void> => {
             fit: [50, 50],
             alignment: "left",
             margin: [0, 10, 0, 25] as [number, number, number, number],
-            width: "auto" as ColumnWidth,
+            width: ("auto" as unknown) as number
           },
           {
             stack: [
@@ -70,7 +69,7 @@ export const generateEvaluationPDF = async (report: Report): Promise<void> => {
               },
             ],
             margin: [0, 10, 0, 10] as [number, number, number, number],
-            width: "*" as ColumnWidth,
+            width: ("auto" as unknown) as number
           },
           {
             stack: [
@@ -87,7 +86,7 @@ export const generateEvaluationPDF = async (report: Report): Promise<void> => {
               },
             ],
             margin: [0, 10, 0, 10] as [number, number, number, number],
-            width: "auto" as ColumnWidth,
+            width: ("auto" as unknown) as number
           },
         ],
         margin: [0, 10, 0, 10] as [number, number, number, number],
