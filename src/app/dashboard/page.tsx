@@ -47,36 +47,39 @@ export default function DashboardPage() {
         <div className="grid gap-6 md:grid-cols-2">
           {reports.map((report) => (
             <Card key={report._id} className="transition hover:shadow-lg">
-              <CardHeader>
-                <CardTitle>
-                  <Link href={`/reports/${report._id}`} className="hover:underline">
-                    {report.title}
-                  </Link>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-700">
-                  <strong>Paciente:</strong> {report.patientName}
-                </p>
-                <p className="text-gray-700">
-                  <strong>Especialista:</strong> {report.specialistName}
-                </p>
-                <p className="text-gray-500 text-sm">
-                  Criado em: {new Date(report.createdAt).toLocaleDateString()}
-                </p>
-              </CardContent>
-              <CardFooter className="flex gap-2">
-                <Button onClick={() => generateEvaluationPDF(report)}>
-                  Exportar PDF
-                </Button>
-                <Button onClick={() => router.push(`/editor/${report._id}`)}>
-                  Editar
-                </Button>
-                <Button variant="destructive" onClick={() => handleDelete(report._id)}>
-                  Excluir
-                </Button>
-              </CardFooter>
-            </Card>
+            <CardHeader>
+              <CardTitle>
+                <Link href={`/reports/${report._id}`} className="hover:underline">
+                  {report.title}
+                </Link>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-700">
+                <strong>Paciente:</strong> {report.identificacao.nome}
+              </p>
+              {/* Você pode incluir mais informações, por exemplo, a data de nascimento */}
+              <p className="text-gray-700">
+                <strong>Data de Nascimento:</strong>{" "}
+                {new Date(report.identificacao.dataNascimento).toLocaleDateString("pt-BR")}
+              </p>
+              <p className="text-gray-500 text-sm">
+                Criado em: {new Date(report.createdAt).toLocaleDateString()}
+              </p>
+            </CardContent>
+            <CardFooter className="flex gap-2">
+              <Button onClick={() => generateEvaluationPDF(report)}>
+                Exportar PDF
+              </Button>
+              <Button onClick={() => router.push(`/editor/${report._id}`)}>
+                Editar
+              </Button>
+              <Button variant="destructive" onClick={() => handleDelete(report._id)}>
+                Excluir
+              </Button>
+            </CardFooter>
+          </Card>
+          
           ))}
         </div>
       )}
