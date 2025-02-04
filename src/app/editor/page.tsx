@@ -5,14 +5,26 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+// Atualize o tipo para incluir subcampos em "identificacao"
 type ReportData = {
   title: string;
-  identificacao: string;
+  identificacao: {
+    nome: string;
+    dataNascimento: string;
+    idade: string;
+    escolaridade: string;
+    escola: string;
+    dominanciaManual: string;
+    pai: string;
+    mae: string;
+    medicamento: string;
+  };
   queixa: string;
   historico: string;
   subtituloHistorico?: string;
   vidaEscolar: string;
   comportamento: string;
+  avaliacao: string;
   avaliacaoInstrumentos: string;
   avaliacaoSintese: string;
   conclusao: string;
@@ -24,12 +36,23 @@ type ReportData = {
 export default function EditorPage() {
   const [form, setForm] = useState<ReportData>({
     title: "",
-    identificacao: "",
+    identificacao: {
+      nome: "",
+      dataNascimento: "",
+      idade: "",
+      escolaridade: "",
+      escola: "",
+      dominanciaManual: "",
+      pai: "",
+      mae: "",
+      medicamento: "Não", // valor padrão
+    },
     queixa: "",
     historico: "",
     subtituloHistorico: "",
     vidaEscolar: "",
     comportamento: "",
+    avaliacao: "",
     avaliacaoInstrumentos: "",
     avaliacaoSintese: "",
     conclusao: "",
@@ -37,12 +60,58 @@ export default function EditorPage() {
     localData: "",
     assinatura: "",
   });
+
   const router = useRouter();
 
+  // Manipulador para campos simples (fora do grupo "identificacao")
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  // Manipulador para campos aninhados em "identificacao"
+  const handleNestedChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    // Espera o nome no formato "identificacao.campo"
+    const [group, field] = name.split(".");
+    if (group === "identificacao") {
+      setForm((prev) => ({
+        ...prev,
+        identificacao: {
+          ...prev.identificacao,
+          [field]: value,
+        },
+      }));
+      // Se o campo for dataNascimento, calcule automaticamente a idade
+      if (field === "dataNascimento") {
+        const birthDate = new Date(value);
+        const today = new Date();
+        let years = today.getFullYear() - birthDate.getFullYear();
+        let months = today.getMonth() - birthDate.getMonth();
+        let days = today.getDate() - birthDate.getDate();
+        if (days < 0) {
+          months -= 1;
+          days += 30; // aproximação
+        }
+        if (months < 0) {
+          years -= 1;
+          months += 12;
+        }
+        const idadeStr = `${years} anos, ${months} meses e ${days} dias`;
+        setForm((prev) => ({
+          ...prev,
+          identificacao: {
+            ...prev.identificacao,
+            idade: idadeStr,
+          },
+        }));
+      }
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -56,12 +125,23 @@ export default function EditorPage() {
       alert("Relatório salvo com sucesso!");
       setForm({
         title: "",
-        identificacao: "",
+        identificacao: {
+          nome: "",
+          dataNascimento: "",
+          idade: "",
+          escolaridade: "",
+          escola: "",
+          dominanciaManual: "",
+          pai: "",
+          mae: "",
+          medicamento: "Não",
+        },
         queixa: "",
         historico: "",
         subtituloHistorico: "",
         vidaEscolar: "",
         comportamento: "",
+        avaliacao: "",
         avaliacaoInstrumentos: "",
         avaliacaoSintese: "",
         conclusao: "",
@@ -84,9 +164,7 @@ export default function EditorPage() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Título */}
           <div>
-            <label className="block font-bold mb-1">
-              Título do Relatório
-            </label>
+            <label className="block font-bold mb-1">Título do Relatório</label>
             <Input
               type="text"
               name="title"
@@ -97,17 +175,129 @@ export default function EditorPage() {
             />
           </div>
 
-          {/* I - IDENTIFICAÇÃO */}
+          {/* I - IDENTIFICAÇÃO com subcampos */}
           <div>
             <label className="block font-bold mb-1">I - IDENTIFICAÇÃO</label>
-            <textarea
-              name="identificacao"
-              value={form.identificacao}
-              onChange={handleChange}
-              placeholder="Insira os dados de identificação (Nome, Data de Nascimento, Escolaridade, etc.)"
-              className="w-full p-2 border rounded"
-              required
-            ></textarea>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium">
+                  Nome do Paciente:
+                </label>
+                <Input
+                  type="text"
+                  name="identificacao.nome"
+                  value={form.identificacao.nome}
+                  onChange={handleNestedChange}
+                  placeholder="Nome do Paciente"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">
+                  Data do Nascimento:
+                </label>
+                <Input
+                  type="date"
+                  name="identificacao.dataNascimento"
+                  value={form.identificacao.dataNascimento}
+                  onChange={handleNestedChange}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">Idade:</label>
+                <Input
+                  type="text"
+                  name="identificacao.idade"
+                  value={form.identificacao.idade}
+                  placeholder="Idade calculada"
+                  readOnly
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">
+                  Escolaridade:
+                </label>
+                <select
+                  name="identificacao.escolaridade"
+                  value={form.identificacao.escolaridade}
+                  onChange={handleNestedChange}
+                  className="w-full p-2 border rounded"
+                  required
+                >
+                  <option value="">Selecione</option>
+                  <option value="Fundamental">Infantil I</option>
+                  <option value="Médio">Infantil II</option>
+                  <option value="Superior">Infantil III</option>
+                  <option value="Superior">Fundamental I</option>
+                  <option value="Superior">Fundamental II</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium">Escola:</label>
+                <Input
+                  type="text"
+                  name="identificacao.escola"
+                  value={form.identificacao.escola}
+                  onChange={handleNestedChange}
+                  placeholder="Nome da Escola"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">
+                  Dominância Manual:
+                </label>
+                <select
+                  name="identificacao.dominanciaManual"
+                  value={form.identificacao.dominanciaManual}
+                  onChange={handleNestedChange}
+                  className="w-full p-2 border rounded"
+                  required
+                >
+                  <option value="">Selecione</option>
+                  <option value="Destro">Destro</option>
+                  <option value="Ambidestro">Ambidestro</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium">Pai:</label>
+                <Input
+                  type="text"
+                  name="identificacao.pai"
+                  value={form.identificacao.pai}
+                  onChange={handleNestedChange}
+                  placeholder="Nome do Pai"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">Mãe:</label>
+                <Input
+                  type="text"
+                  name="identificacao.mae"
+                  value={form.identificacao.mae}
+                  onChange={handleNestedChange}
+                  placeholder="Nome da Mãe"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium">
+                  Faz uso de medicamento:
+                </label>
+                <select
+                  name="identificacao.medicamento"
+                  value={form.identificacao.medicamento}
+                  onChange={handleNestedChange}
+                  className="w-full p-2 border rounded"
+                  required
+                >
+                  <option value="Não">Não</option>
+                  <option value="Sim">Sim</option>
+                </select>
+              </div>
+            </div>
           </div>
 
           {/* II - QUEIXA */}
@@ -180,6 +370,20 @@ export default function EditorPage() {
             ></textarea>
           </div>
 
+          {/* VI - AVALIAÇÃO */}
+          <div>
+            <label className="block font-bold mb-1">
+              VI - AVALIAÇÃO
+            </label>
+            <textarea
+              name="avaliacao"
+              value={form.avaliacao}
+              onChange={handleChange}
+              placeholder="Insira a introdução sobre a avaliação."
+              className="w-full p-2 border rounded"
+              required
+            ></textarea>
+          </div>
           {/* VI - AVALIAÇÃO */}
           <div>
             <label className="block font-bold mb-1">

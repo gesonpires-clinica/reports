@@ -10,10 +10,21 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 
+// Atualize o tipo para refletir a nova estrutura de identificacao
 export type Report = {
   _id: string;
   title: string;
-  identificacao: string;
+  identificacao: {
+    nome: string;
+    dataNascimento: string;
+    idade: string;
+    escolaridade: string;
+    escola: string;
+    dominanciaManual: string;
+    pai: string;
+    mae: string;
+    medicamento: string;
+  };
   queixa: string;
   historico: string;
   subtituloHistorico?: string;
@@ -66,8 +77,16 @@ export default function Home() {
                 <CardTitle>{report.title}</CardTitle>
               </CardHeader>
               <CardContent>
+                {/* Exibe apenas alguns dados da identificação */}
                 <p>
-                  <strong>Identificação:</strong> {report.identificacao}
+                  <strong>Paciente:</strong> {report.identificacao.nome}
+                </p>
+                <p>
+                  <strong>Data de Nascimento:</strong>{" "}
+                  {new Date(report.identificacao.dataNascimento).toLocaleDateString("pt-BR")}
+                </p>
+                <p>
+                  <strong>Idade:</strong> {report.identificacao.idade}
                 </p>
                 <p>
                   <strong>Queixa:</strong> {report.queixa}
@@ -76,7 +95,7 @@ export default function Home() {
                   Criado em:{" "}
                   {new Date(report.createdAt).toLocaleDateString("pt-BR")}
                 </p>
-                {/* Exibe um trecho da conclusão como exemplo; você pode ajustar qual campo deseja mostrar */}
+                {/* Exibe um trecho da conclusão */}
                 <p className="mt-2">
                   {report.conclusao.length > 100
                     ? report.conclusao.slice(0, 100) + "..."

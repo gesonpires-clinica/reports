@@ -6,8 +6,8 @@ import Link from "next/link";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-// Importa a função e o tipo Report do arquivo pdfGenerator
-import { generateEvaluationPDF, Report } from "@/lib/pdfGenerator";
+// Importa a função de geração de PDF do arquivo separado
+import { generateEvaluationPDF } from "@/lib/pdfGenerator";
 
 export default function DashboardPage() {
   const [reports, setReports] = useState<Report[]>([]);
