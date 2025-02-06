@@ -41,7 +41,8 @@ export type Report = {
 
 export const generateEvaluationPDF = async (report: Report): Promise<void> => {
   // Exemplo de logo em base64 – certifique-se de usar sua própria string
-    const docDefinition: TDocumentDefinitions = {
+  const docDefinition: TDocumentDefinitions = {
+    pageMargins: [40, 60, 40, 60], // [left, top, right, bottom]
     content: [
       // Header com 3 colunas: logo, textos centrais e informações de contato
       {
@@ -51,7 +52,7 @@ export const generateEvaluationPDF = async (report: Report): Promise<void> => {
             fit: [50, 50],
             alignment: "left",
             margin: [0, 10, 0, 25] as [number, number, number, number],
-            width: ("auto" as unknown) as number
+            width: 60,
           },
           {
             stack: [
@@ -69,7 +70,7 @@ export const generateEvaluationPDF = async (report: Report): Promise<void> => {
               },
             ],
             margin: [0, 10, 0, 10] as [number, number, number, number],
-            width: ("auto" as unknown) as number
+            width: "*",
           },
           {
             stack: [
@@ -86,7 +87,7 @@ export const generateEvaluationPDF = async (report: Report): Promise<void> => {
               },
             ],
             margin: [0, 10, 0, 10] as [number, number, number, number],
-            width: ("auto" as unknown) as number
+            width: 210,
           },
         ],
         margin: [0, 10, 0, 10] as [number, number, number, number],
@@ -104,7 +105,9 @@ export const generateEvaluationPDF = async (report: Report): Promise<void> => {
           "Nome do Paciente: " +
           report.identificacao.nome +
           "\nData de Nascimento: " +
-          new Date(report.identificacao.dataNascimento).toLocaleDateString("pt-BR") +
+          new Date(report.identificacao.dataNascimento).toLocaleDateString(
+            "pt-BR"
+          ) +
           "\nIdade: " +
           report.identificacao.idade +
           "\nEscolaridade: " +
@@ -124,7 +127,10 @@ export const generateEvaluationPDF = async (report: Report): Promise<void> => {
       },
       { text: "II - QUEIXA", style: "sectionHeader" },
       { text: report.queixa, style: "content", margin: [20, 0, 0, 10] },
-      { text: "III - HISTÓRICO DO DESENVOLVIMENTO E DA SAÚDE", style: "sectionHeader" },
+      {
+        text: "III - HISTÓRICO DO DESENVOLVIMENTO E DA SAÚDE",
+        style: "sectionHeader",
+      },
       { text: report.historico, style: "content", margin: [20, 0, 0, 10] },
       ...(report.subtituloHistorico
         ? [
@@ -137,7 +143,10 @@ export const generateEvaluationPDF = async (report: Report): Promise<void> => {
         : []),
       { text: "IV - VIDA ESCOLAR", style: "sectionHeader" },
       { text: report.vidaEscolar, style: "content", margin: [20, 0, 0, 10] },
-      { text: "V - COMPORTAMENTO DO APRENDIZANTE DURANTE A AVALIAÇÃO", style: "sectionHeader" },
+      {
+        text: "V - COMPORTAMENTO DO APRENDIZANTE DURANTE A AVALIAÇÃO",
+        style: "sectionHeader",
+      },
       { text: report.comportamento, style: "content", margin: [20, 0, 0, 10] },
       { text: "VI - AVALIAÇÃO", style: "sectionHeader" },
       {
