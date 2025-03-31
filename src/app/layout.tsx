@@ -1,14 +1,27 @@
-"use client";
-
 import "@/styles/globals.css";
 import Header from "@/components/Header";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { ToasterProvider } from "@/components/providers/toaster";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "GeraRan - Gerador de Relatórios",
+  description: "Sistema para geração de relatórios",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="pt-BR">
-      <body className="min-h-screen bg-gray-100">
+      <body className={inter.className}>
         <Header />
         <main className="p-6">{children}</main>
+        <ToasterProvider />
       </body>
     </html>
   );
