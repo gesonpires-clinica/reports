@@ -5,8 +5,12 @@ const reportSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  patientAge: {
-    type: Number,
+  patientId: {
+    type: String,
+    required: true,
+  },
+  date: {
+    type: Date,
     required: true,
   },
   anamnese: {
@@ -24,6 +28,12 @@ const reportSchema = new mongoose.Schema({
   recomendacoes: {
     type: String,
     required: true,
+  },
+  digitalSignature: {
+    userId: String,
+    timestamp: Date,
+    documentHash: String,
+    signature: String
   },
   tags: [{
     type: String,
