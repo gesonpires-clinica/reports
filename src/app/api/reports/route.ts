@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { connectDB } from "@/lib/db";
-import Report from "@/lib/reportSchema";
-
-// Conectar ao banco antes de qualquer requisição
-connectDB();
+import { connectToDatabase } from "@/lib/db";
+import { Report } from "@/models/Report";
 
 // Criar um novo relatório
 export async function POST(req: NextRequest) {
   try {
+    await connectToDatabase();
     const body = await req.json();
     const report = await Report.create(body);
     return NextResponse.json(report, { status: 201 });
@@ -20,6 +18,7 @@ export async function POST(req: NextRequest) {
 // Buscar todos os relatórios
 export async function GET() {
   try {
+    await connectToDatabase();
     const reports = await Report.find();
     return NextResponse.json(reports, { status: 200 });
   } catch (error) {

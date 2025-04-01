@@ -8,7 +8,8 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/RichTextEditor";
+import { DraftManager } from "@/components/DraftManager";
 import { CommonPhrases } from "@/components/CommonPhrases";
 import { toast } from "sonner";
 
@@ -28,11 +29,13 @@ export default function NewReport() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [activeSection, setActiveSection] = useState<"anamnese" | "avaliacao" | "conclusao" | "recomendacoes">("anamnese");
+  const [reportId, setReportId] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<ReportFormData>({
     resolver: zodResolver(reportSchema),
@@ -52,6 +55,8 @@ export default function NewReport() {
 
       if (!response.ok) throw new Error("Erro ao criar relatório");
 
+      const result = await response.json();
+      setReportId(result._id);
       toast.success("Relatório criado com sucesso!");
       router.push("/reports");
     } catch (error) {
@@ -63,6 +68,31 @@ export default function NewReport() {
 
   const handlePhraseSelect = (phrase: string) => {
     setValue(activeSection, phrase);
+  };
+
+  const handleDraftSelect = (content: string) => {
+    setValue(activeSection, content);
+  };
+
+  const handleSaveDraft = async (content: string) => {
+    if (!reportId) return;
+
+    try {
+      const response = await fetch("/api/drafts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content,
+          section: activeSection,
+          reportId,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Erro ao salvar rascunho");
+      toast.success("Rascunho salvo com sucesso!");
+    } catch (error) {
+      toast.error("Erro ao salvar rascunho");
+    }
   };
 
   return (
@@ -104,14 +134,15 @@ export default function NewReport() {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="md:col-span-2 space-y-4">
             <div>
               <Label htmlFor="anamnese">Anamnese</Label>
-              <Textarea
-                id="anamnese"
-                {...register("anamnese")}
-                className={errors.anamnese ? "border-red-500" : ""}
+              <RichTextEditor
+                content={watch("anamnese") || ""}
+                onChange={(content) => setValue("anamnese", content)}
+                placeholder="Digite a anamnese..."
+                onSave={() => handleSaveDraft(watch("anamnese"))}
                 onClick={() => setActiveSection("anamnese")}
               />
               {errors.anamnese && (
@@ -121,10 +152,11 @@ export default function NewReport() {
 
             <div>
               <Label htmlFor="avaliacao">Avaliação</Label>
-              <Textarea
-                id="avaliacao"
-                {...register("avaliacao")}
-                className={errors.avaliacao ? "border-red-500" : ""}
+              <RichTextEditor
+                content={watch("avaliacao") || ""}
+                onChange={(content) => setValue("avaliacao", content)}
+                placeholder="Digite a avaliação..."
+                onSave={() => handleSaveDraft(watch("avaliacao"))}
                 onClick={() => setActiveSection("avaliacao")}
               />
               {errors.avaliacao && (
@@ -134,10 +166,11 @@ export default function NewReport() {
 
             <div>
               <Label htmlFor="conclusao">Conclusão</Label>
-              <Textarea
-                id="conclusao"
-                {...register("conclusao")}
-                className={errors.conclusao ? "border-red-500" : ""}
+              <RichTextEditor
+                content={watch("conclusao") || ""}
+                onChange={(content) => setValue("conclusao", content)}
+                placeholder="Digite a conclusão..."
+                onSave={() => handleSaveDraft(watch("conclusao"))}
                 onClick={() => setActiveSection("conclusao")}
               />
               {errors.conclusao && (
@@ -147,10 +180,11 @@ export default function NewReport() {
 
             <div>
               <Label htmlFor="recomendacoes">Recomendações</Label>
-              <Textarea
-                id="recomendacoes"
-                {...register("recomendacoes")}
-                className={errors.recomendacoes ? "border-red-500" : ""}
+              <RichTextEditor
+                content={watch("recomendacoes") || ""}
+                onChange={(content) => setValue("recomendacoes", content)}
+                placeholder="Digite as recomendações..."
+                onSave={() => handleSaveDraft(watch("recomendacoes"))}
                 onClick={() => setActiveSection("recomendacoes")}
               />
               {errors.recomendacoes && (
@@ -159,9 +193,21 @@ export default function NewReport() {
             </div>
           </div>
 
-          <div className="border-l pl-4">
-            <h2 className="text-lg font-semibold mb-4">Frases Comuns</h2>
-            <CommonPhrases category={activeSection} onSelect={handlePhraseSelect} />
+          <div className="space-y-4">
+            <div className="border-l pl-4">
+              <h2 className="text-lg font-semibold mb-4">Frases Comuns</h2>
+              <CommonPhrases category={activeSection} onSelect={handlePhraseSelect} />
+            </div>
+
+            {reportId && (
+              <div className="border-l pl-4">
+                <DraftManager
+                  reportId={reportId}
+                  section={activeSection}
+                  onSelectDraft={handleDraftSelect}
+                />
+              </div>
+            )}
           </div>
         </div>
 

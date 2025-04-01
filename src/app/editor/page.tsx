@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { RichTextEditor } from "@/components/RichTextEditor";
 
 // Atualize o tipo para incluir subcampos em "identificacao"
 type ReportData = {
@@ -313,139 +314,111 @@ export default function EditorPage() {
           {/* II - QUEIXA */}
           <div>
             <label className="block font-bold mb-1">II - QUEIXA</label>
-            <textarea
-              name="queixa"
-              value={form.queixa}
-              onChange={handleChange}
+            <RichTextEditor
+              content={form.queixa}
+              onChange={(content) => setForm({ ...form, queixa: content })}
               placeholder="Descreva a queixa apresentada"
-              className="w-full p-2 border rounded"
-              required
-            ></textarea>
+            />
           </div>
 
-          {/* III - HISTÓRICO DO DESENVOLVIMENTO E DA SAÚDE */}
+          {/* III - HISTÓRICO */}
           <div>
             <label className="block font-bold mb-1">
               III - HISTÓRICO DO DESENVOLVIMENTO E DA SAÚDE
             </label>
-            <textarea
-              name="historico"
-              value={form.historico}
-              onChange={handleChange}
+            <RichTextEditor
+              content={form.historico}
+              onChange={(content) => setForm({ ...form, historico: content })}
               placeholder="Descreva o histórico do desenvolvimento e da saúde"
-              className="w-full p-2 border rounded"
-              required
-            ></textarea>
+            />
           </div>
 
-          {/* III.1 - JEITO DE SER DA CRIANÇA, SEGUNDO OS PAIS (Opcional) */}
+          {/* III.1 - JEITO DE SER DA CRIANÇA */}
           <div>
             <label className="block font-bold mb-1">
               III.1 - Jeito de ser da criança, segundo os pais (Opcional)
             </label>
-            <textarea
-              name="subtituloHistorico"
-              value={form.subtituloHistorico}
-              onChange={handleChange}
+            <RichTextEditor
+              content={form.subtituloHistorico || ""}
+              onChange={(content) => setForm({ ...form, subtituloHistorico: content })}
               placeholder="Descreva o jeito de ser da criança, segundo os pais"
-              className="w-full p-2 border rounded"
-            ></textarea>
+            />
           </div>
 
           {/* IV - VIDA ESCOLAR */}
           <div>
             <label className="block font-bold mb-1">IV - VIDA ESCOLAR</label>
-            <textarea
-              name="vidaEscolar"
-              value={form.vidaEscolar}
-              onChange={handleChange}
+            <RichTextEditor
+              content={form.vidaEscolar}
+              onChange={(content) => setForm({ ...form, vidaEscolar: content })}
               placeholder="Descreva a vida escolar do aprendiz"
-              className="w-full p-2 border rounded"
-              required
-            ></textarea>
+            />
           </div>
 
-          {/* V - COMPORTAMENTO DO APRENDIZANTE DURANTE A AVALIAÇÃO */}
+          {/* V - COMPORTAMENTO */}
           <div>
             <label className="block font-bold mb-1">
               V - COMPORTAMENTO DO APRENDIZANTE DURANTE A AVALIAÇÃO
             </label>
-            <textarea
-              name="comportamento"
-              value={form.comportamento}
-              onChange={handleChange}
+            <RichTextEditor
+              content={form.comportamento}
+              onChange={(content) => setForm({ ...form, comportamento: content })}
               placeholder="Descreva o comportamento durante a avaliação"
-              className="w-full p-2 border rounded"
-              required
-            ></textarea>
+            />
           </div>
 
           {/* VI - AVALIAÇÃO */}
           <div>
-            <label className="block font-bold mb-1">
-              VI - AVALIAÇÃO
-            </label>
-            <textarea
-              name="avaliacao"
-              value={form.avaliacao}
-              onChange={handleChange}
+            <label className="block font-bold mb-1">VI - AVALIAÇÃO</label>
+            <RichTextEditor
+              content={form.avaliacao}
+              onChange={(content) => setForm({ ...form, avaliacao: content })}
               placeholder="Insira a introdução sobre a avaliação."
-              className="w-full p-2 border rounded"
-              required
-            ></textarea>
+            />
           </div>
-          {/* VI - AVALIAÇÃO */}
+
+          {/* VI.1 - INSTRUMENTOS */}
           <div>
             <label className="block font-bold mb-1">
               VI.1 - Instrumentos Utilizados
             </label>
-            <textarea
-              name="avaliacaoInstrumentos"
-              value={form.avaliacaoInstrumentos}
-              onChange={handleChange}
+            <RichTextEditor
+              content={form.avaliacaoInstrumentos}
+              onChange={(content) => setForm({ ...form, avaliacaoInstrumentos: content })}
               placeholder="Liste os instrumentos utilizados"
-              className="w-full p-2 border rounded"
-              required
-            ></textarea>
+            />
           </div>
+
+          {/* VI.2 - SÍNTESE */}
           <div>
             <label className="block font-bold mb-1">
               VI.2 - Síntese dos Resultados
             </label>
-            <textarea
-              name="avaliacaoSintese"
-              value={form.avaliacaoSintese}
-              onChange={handleChange}
+            <RichTextEditor
+              content={form.avaliacaoSintese}
+              onChange={(content) => setForm({ ...form, avaliacaoSintese: content })}
               placeholder="Sintetize os resultados obtidos"
-              className="w-full p-2 border rounded"
-              required
-            ></textarea>
+            />
           </div>
 
           {/* VII - CONCLUSÃO */}
           <div>
             <label className="block font-bold mb-1">VII - CONCLUSÃO</label>
-            <textarea
-              name="conclusao"
-              value={form.conclusao}
-              onChange={handleChange}
+            <RichTextEditor
+              content={form.conclusao}
+              onChange={(content) => setForm({ ...form, conclusao: content })}
               placeholder="Apresente a conclusão"
-              className="w-full p-2 border rounded"
-              required
-            ></textarea>
+            />
           </div>
 
           {/* Fechamento */}
           <div>
             <label className="block font-bold mb-1">Fechamento</label>
-            <textarea
-              name="fechamento"
-              value={form.fechamento}
-              onChange={handleChange}
+            <RichTextEditor
+              content={form.fechamento}
+              onChange={(content) => setForm({ ...form, fechamento: content })}
               placeholder="Ex.: Coloco-me à disposição para maiores informações."
-              className="w-full p-2 border rounded"
-              required
-            ></textarea>
+            />
           </div>
 
           {/* Local e Data */}
