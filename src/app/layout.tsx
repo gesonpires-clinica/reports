@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 import Header from "@/components/Header";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ToasterProvider } from "@/components/providers/toaster";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Header />
         <main className="p-6">{children}</main>
-        <ToasterProvider />
+        <Toaster />
       </body>
     </html>
   );
